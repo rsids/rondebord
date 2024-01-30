@@ -1,6 +1,18 @@
 @import '../../node_modules/bulma/bulma.sass';
 @import '../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
 
+html {
+  --color-red: rgb(248, 79, 79);
+  --color-blue: rgb(25, 168, 255);
+  --color-yellow: rgb(255, 242, 103);
+  --color-white: rgb(250, 255, 255);
+
+  --lap-0: var(--color-red);
+  --lap-1: var(--color-white);
+  --lap-2: var(--color-blue);
+  --lap-3: var(--color-yellow);
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -23,6 +35,7 @@
   font-size: 72px;
   overflow: hidden;
   display: grid;
+  grid-gap: 1rem;
   grid-template-columns: 1fr 1fr;
 
   &.is-pair,
@@ -34,12 +47,54 @@
   &.grid--full {
     height: 100vh;
     width: 100vw;
+    grid-gap: 1vw;
     font-size: 30vw;
   }
 }
 
+.lap--0 {
+  background: var(--lap-0);
 
-.ronde {
+  .is-single & {
+    --lap-0: var(--color-white);
+  }
+
+  .is-quartet-simple &,
+  .is-pair & {
+    --lap-0: linear-gradient(45deg, var(--color-red) 50%, var(--color-white) 50%);
+  }
+}
+
+.lap--1 {
+  background: var(--lap-1);
+
+  .is-quartet-simple & {
+    --lap-1: linear-gradient(45deg, var(--color-blue) 50%, var(--color-yellow) 50%);
+  }
+}
+
+.is-single,
+.is-pair {
+  .lap--0 ~ .lap {
+    display: none;
+  }
+}
+
+.is-quartet-simple {
+  .lap--1 ~ .lap {
+    display: none;
+  }
+}
+
+.lap--2 {
+  background: var(--lap-2);
+}
+
+.lap--3 {
+  background: var(--lap-3);
+}
+
+.lap {
   align-items: center;
   justify-content: center;
   display: flex;
@@ -52,57 +107,6 @@
     -0.4vw 0.4vw 0 #fff,
     0.4vw 0.4vw 0 #fff;
   }
-}
-
-.is-single,
-.is-pair {
-  .ronde--1 ~ .ronde {
-    display: none;
-  }
-}
-
-.is-quartet-simple {
-  .ronde--2 {
-    background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgb(251, 255, 0) 100%);
-  }
-
-  .ronde--2 ~ .ronde {
-    display: none;
-  }
-}
-
-.ronde.is-single,
-.ronde.is-double,
-.ronde.is-quartet {
-  background-color: linear-gradient(90deg, rgba(255, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 100%);
-}
-
-.ronde.is-double {
-  background-color: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgb(251, 255, 0) 100%);
-}
-
-.ronde--1 {
-  background: linear-gradient(90deg, rgba(255, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 100%);
-
-  .is-single & {
-    background: white;
-  }
-
-  .is-quartet & {
-    background: linear-gradient(90deg, rgba(255, 0, 0, 1) 50%, rgba(255, 255, 255, 1) 100%);
-  }
-}
-
-.ronde--2 {
-  background: white;
-}
-
-.ronde--3 {
-  background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgb(251, 255, 0) 200%);
-}
-
-.ronde--4 {
-  background: linear-gradient(90deg, rgba(0, 0, 255, 1) -100%, rgb(251, 255, 0) 100%);
 }
 
 .settings {
@@ -122,3 +126,5 @@
 .connection.is-connected {
   background-color: limegreen;
 }
+
+.button--up {}

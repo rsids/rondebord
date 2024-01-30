@@ -5,10 +5,11 @@ const ip = ref('')
 const mode = ref<displaymode>('quartet')
 const serverConnected = ref(false)
 
+const r0 = ref('0')
 const r1 = ref('1')
 const r2 = ref('2')
 const r3 = ref('3')
-const r4 = ref('4')
+const refs = [r0, r1, r2, r3]
 
 onMounted(() => {
   const socket = new WebSocket('ws://localhost:3030')
@@ -29,10 +30,7 @@ onMounted(() => {
         mode.value = data.data
         break
       case 'laps':
-        r1.value = data.data[0]
-        r2.value = data.data[1]
-        r3.value = data.data[2]
-        r4.value = data.data[3]
+        refs.forEach((r, i) => (r.value = data.data[i]))
     }
   }
   socket.onerror = (evt) => {
@@ -50,10 +48,10 @@ onMounted(() => {
 
 <template>
   <main class="grid grid--full" :class="`is-${mode}`">
-    <div class="ronde ronde--1">{{ r1 }}</div>
-    <div class="ronde ronde--2">{{ r2 }}</div>
-    <div class="ronde ronde--3">{{ r3 }}</div>
-    <div class="ronde ronde--4">{{ r4 }}</div>
+    <div class="lap lap--0">{{ r0 }}</div>
+    <div class="lap lap--1">{{ r1 }}</div>
+    <div class="lap lap--2">{{ r2 }}</div>
+    <div class="lap lap--3">{{ r3 }}</div>
   </main>
   <div class="connection" :class="{ 'is-connected': serverConnected }"></div>
   <div class="ip">{{ ip }}</div>

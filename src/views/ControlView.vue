@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import LapInput from '@/components/LapInput.vue'
 
 type displaymode = 'single' | 'pair' | 'quartet' | 'quartet-simple'
 const ip = ref('localhost')
 const mode = ref<displaymode>('quartet')
+const r0 = ref(0)
 const r1 = ref(1)
 const r2 = ref(2)
 const r3 = ref(3)
-const r4 = ref(4)
-const refs = [r1, r2, r3, r4]
+const refs = [r0, r1, r2, r3]
 let socket: WebSocket
 onMounted(() => connect())
 
@@ -20,7 +21,7 @@ const onIpChange = () => {
   connect()
 }
 
-const resetLaps = (laps) => {
+const resetLaps = (laps: number) => {
   if (!socket) {
     // Show error
   }
@@ -28,11 +29,14 @@ const resetLaps = (laps) => {
   socket.send(JSON.stringify({ type: 'laps', data: refs.map((r) => r.value) }))
 }
 
-const up = (which) => set(which, 1)
+const up = (which: number) => set(which, 1)
 
-const down = (which) => set(which, -1)
-
-const set = (which, dir) => {
+const down = (which: number) => set(which, -1)
+const modelChanged = () => {
+  console.log('modelChanged', r1.value)
+  socket.send(JSON.stringify({ type: 'laps', data: refs.map((r) => r.value) }))
+}
+const set = (which: number, dir: number) => {
   refs[0].value = Math.max(0, refs[0].value + dir)
   socket.send(JSON.stringify({ type: 'laps', data: refs.map((r) => r.value) }))
 }
@@ -44,17 +48,18 @@ const connect = () => {
   socket = new WebSocket(`ws://${ip.value}:3030`)
   socket.onmessage = (evt) => {
     const data = JSON.parse(evt.data)
-    console.log('onmessage', data)
     switch (data.type) {
       case 'ip':
         socket.send(JSON.stringify({ type: 'connection', data: 'server' }))
     }
   }
   socket.onerror = (evt) => {
+    // todo: Show error
     console.log('onError', evt)
   }
 
   socket.onclose = (evt) => {
+    // todo: Show error
     console.log('onclose', evt)
   }
   socket.onopen = (evt) => {
@@ -148,29 +153,10 @@ const connect = () => {
           <h2 class="is-size-2">Rondes</h2>
           <div class="grid-container">
             <main class="grid grid--server" :class="`is-${mode}`">
-              <div class="p-6 ronde ronde--1">
-                <button @click="up(0)">
-                  <span class="icon">
-                    <i class="fas fa-arrow-right"></i>
-                  </span>
-                </button>
-                <input class="input is-large is-rounded has-text-centered" v-model="r1" />
-
-                <button @click="down(0)">
-                  <span class="icon">
-                    <i class="fas fa-arrow-right"></i>
-                  </span>
-                </button>
-              </div>
-              <div class="p-6 ronde ronde--2">
-                <input class="input is-large is-rounded has-text-centered" v-model="r2" />
-              </div>
-              <div class="p-6 ronde ronde--3">
-                <input class="input is-large is-rounded has-text-centered" v-model="r3" />
-              </div>
-              <div class="p-6 ronde ronde--4">
-                <input class="input is-large is-rounded has-text-centered" v-model="r4" />
-              </div>
+              <LapInput class="lap lap--0" v-model="r0" @update:modelValue="modelChanged" />
+              <LapInput class="lap lap--1" v-model="r1" @update:modelValue="modelChanged" />
+              <LapInput class="lap lap--2" v-model="r2" @update:modelValue="modelChanged" />
+              <LapInput class="lap lap--3" v-model="r3" @update:modelValue="modelChanged" />
             </main>
           </div>
         </section>
