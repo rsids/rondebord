@@ -1,0 +1,124 @@
+@import '../../node_modules/bulma/bulma.sass';
+@import '../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome';
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.ip {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.grid-container {
+  width: 100%;
+  aspect-ratio: 3/2;
+}
+
+.grid {
+  height: 100%;
+  width: 100%;
+  font-size: 72px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  &.is-pair,
+  &.is-single {
+    font-size: 60vw;
+    grid-template-columns: 1fr;
+  }
+
+  &.grid--full {
+    height: 100vh;
+    width: 100vw;
+    font-size: 30vw;
+  }
+}
+
+
+.ronde {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  line-height: 0;
+  text-align: center;
+
+  .grid--full & {
+    text-shadow: -0.4vw -0.4vw 0 #fff,
+    0.4vw -0.4vw 0 #fff,
+    -0.4vw 0.4vw 0 #fff,
+    0.4vw 0.4vw 0 #fff;
+  }
+}
+
+.is-single,
+.is-pair {
+  .ronde--1 ~ .ronde {
+    display: none;
+  }
+}
+
+.is-quartet-simple {
+  .ronde--2 {
+    background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgb(251, 255, 0) 100%);
+  }
+
+  .ronde--2 ~ .ronde {
+    display: none;
+  }
+}
+
+.ronde.is-single,
+.ronde.is-double,
+.ronde.is-quartet {
+  background-color: linear-gradient(90deg, rgba(255, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.ronde.is-double {
+  background-color: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgb(251, 255, 0) 100%);
+}
+
+.ronde--1 {
+  background: linear-gradient(90deg, rgba(255, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 100%);
+
+  .is-single & {
+    background: white;
+  }
+
+  .is-quartet & {
+    background: linear-gradient(90deg, rgba(255, 0, 0, 1) 50%, rgba(255, 255, 255, 1) 100%);
+  }
+}
+
+.ronde--2 {
+  background: white;
+}
+
+.ronde--3 {
+  background: linear-gradient(90deg, rgba(0, 0, 255, 1) 0%, rgb(251, 255, 0) 200%);
+}
+
+.ronde--4 {
+  background: linear-gradient(90deg, rgba(0, 0, 255, 1) -100%, rgb(251, 255, 0) 100%);
+}
+
+.settings {
+  margin: 2rem;
+}
+
+.connection {
+  border-radius: 50% 50%;
+  background-color: orangered;
+  padding: .3rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+}
+
+.connection.is-connected {
+  background-color: limegreen;
+}
