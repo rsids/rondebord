@@ -46,4 +46,7 @@ bun run lint
 ```
 
 ### Websocket server
+
+```sh
 bun run server/server.ts
+```
