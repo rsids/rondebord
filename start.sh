@@ -11,7 +11,7 @@ function stopScripts {
 trap stopScripts ERR EXIT
 
 # Run server
-bun run server/server.ts &
+bun run ./server/server.ts &
 
 # Run shell script
 ./run.sh &

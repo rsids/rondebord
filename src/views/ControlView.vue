@@ -11,7 +11,12 @@ const r2 = ref(2)
 const r3 = ref(3)
 const refs = [r0, r1, r2, r3]
 let socket: WebSocket
-onMounted(() => connect())
+onMounted(() => {
+  {
+    ip.value = location.hostname
+    connect()
+  }
+})
 
 const onModeChange = () => {
   socket.send(JSON.stringify({ type: 'mode', data: mode.value }))
